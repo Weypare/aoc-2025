@@ -1,6 +1,14 @@
+exe_file := "build/aoc_2025"
+
+_all:
+    @just --list
+
 build:
     @mkdir -p build
-    odin build src -out:build/aoc_2025
+    odin build src -out:{{exe_file}}
 
-run: build
-    build/aoc_2025
+run day: build
+    {{exe_file}} {{day}}
+
+run-example day: build
+    {{exe_file}} {{day}} --example
