@@ -14,7 +14,7 @@ main :: proc() {
 	flags.parse_or_exit(&cli, os.args, .Unix)
 
 	if cli.day == 0 || auto_cast cli.day > len(SOLUTIONS) {
-		fmt.eprintf("Day must be in the range [1, %d]", len(SOLUTIONS))
+		fmt.eprintf("Day must be in the range 1..=%d\n", len(SOLUTIONS))
 		os.exit(1)
 	}
 
@@ -28,4 +28,8 @@ main :: proc() {
 	solution(input)
 }
 
-SOLUTIONS: []proc(_: []byte) = {day1}
+SOLUTIONS: []proc(_: []byte) = {
+	day1,
+	day2,
+	//
+}

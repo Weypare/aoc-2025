@@ -11,8 +11,7 @@ day1 :: proc(input_: []byte) {
 	zero_count_p2: i64 = 0
 	for line in bytes.split_iterator(&input, []byte{'\n'}) {
 		if len(line) == 0 {continue}
-		count, success := strconv.parse_i64(string(line[1:]))
-		assert(success, "invalid int")
+		count := parse_i64_or_die(string(line[1:]))
 		full := count / 100
 		rest := count % 100
 		switch line[0] {
