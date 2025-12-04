@@ -16,40 +16,24 @@ day2 :: proc(input: []byte) {
 		dash_idx := bytes.index_byte(range, '-')
 		start := parse_i64_or_die(string(range[:dash_idx]))
 		end := parse_i64_or_die(string(range[dash_idx + 1:]))
-		part1(start, end, &sum_p1)
-		part2(start, end, &sum_p2, &seen_ids_p2)
+		impl(start, end, &sum_p1, nil, 2)
+		impl(start, end, &sum_p2, &seen_ids_p2)
 	}
 
 	fmt.printf("Part 1: %d\n", sum_p1)
 	fmt.printf("Part 2: %d\n", sum_p2)
 }
 
-// make_invalid_id_from_repetitions(123, 3, 4) -> 123_123_123_123
+POWERS_OF_10 := []i64{1, 10, 100, 1000, 10000, 100000}
+
 @(private = "file")
 make_invalid_id_from_repetitions :: proc(val: i64, val_width: i64, reps: i64) -> i64 {
 	out := val
 	for _ in 0 ..< reps - 1 {
-		for _ in 0 ..< val_width {
-			out *= 10
-		}
+		out *= POWERS_OF_10[val_width]
 		out += val
 	}
 	return out
-}
-
-@(private = "file")
-ipow10 :: proc(n: i64) -> i64 {
-	return cast(i64)math.pow10(cast(f32)n)
-}
-
-@(private = "file")
-part1 :: proc(start: i64, end: i64, sum: ^i64) {
-	impl(start, end, sum, nil, 2)
-}
-
-@(private = "file")
-part2 :: proc(start: i64, end: i64, sum: ^i64, seen_invalid_ids: ^map[i64]bool) {
-	impl(start, end, sum, seen_invalid_ids)
 }
 
 @(private = "file")
@@ -67,7 +51,7 @@ impl :: proc(
 		width_loop: for width in start_width ..= end_width {
 			if width % reps != 0 {continue}
 			pattern_width := width / reps
-			for pattern in ipow10(pattern_width - 1) ..< ipow10(pattern_width) {
+			for pattern in POWERS_OF_10[pattern_width - 1] ..< POWERS_OF_10[pattern_width] {
 				candidate := make_invalid_id_from_repetitions(pattern, pattern_width, reps)
 				if candidate < start {continue}
 				if candidate > end {break width_loop}
