@@ -5,7 +5,7 @@ _all:
 
 build:
     @mkdir -p build
-    odin build src -out:{{exe_file}}
+    odin build src -out:{{exe_file}} -vet
 
 run day: build
     {{exe_file}} {{day}}

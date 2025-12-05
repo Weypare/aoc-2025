@@ -2,7 +2,6 @@ package aoc_2025
 
 import "core:bytes"
 import "core:fmt"
-import "core:strconv"
 
 day1 :: proc(input_: []byte) {
 	input := input_

@@ -12,8 +12,6 @@ day4 :: proc(input: []byte) {
 	width: i64 = auto_cast bytes.index_byte(trimmed, '\n')
 	height: i64 = auto_cast (1 + bytes.count(trimmed, []byte{'\n'}))
 
-	fmt.printf("%dx%d\n", width, height)
-
 	grid := Grid {
 		inner  = input,
 		width  = width,
@@ -30,8 +28,8 @@ day4 :: proc(input: []byte) {
 		}
 	}
 
-	generation: u8 = '@' + 1
-	assert(generation > '.')
+	generation: u8 = PAPER + 1
+	assert(generation > EMPTY)
 	for {
 		did_remove := false
 		for row in 0 ..< grid.height {
@@ -53,8 +51,12 @@ day4 :: proc(input: []byte) {
 	fmt.printf("Part 2: %d\n", count_p2)
 }
 
+@(private = "file")
 PAPER :: '@'
+@(private = "file")
+EMPTY :: '.'
 
+@(private = "file")
 Grid :: struct {
 	inner:  []byte,
 	width:  i64,
@@ -62,13 +64,11 @@ Grid :: struct {
 	stride: i64,
 }
 
-
 @(private = "file")
 grid_at :: proc(grid: Grid, row: i64, col: i64) -> ^byte {
-	using grid
 	if row < 0 || col < 0 {return nil}
-	if col >= width || row >= height {return nil}
-	return &inner[row * stride + col]
+	if col >= grid.width || row >= grid.height {return nil}
+	return &grid.inner[row * grid.stride + col]
 }
 
 @(private = "file")
