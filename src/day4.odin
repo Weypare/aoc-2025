@@ -57,21 +57,6 @@ PAPER :: '@'
 EMPTY :: '.'
 
 @(private = "file")
-Grid :: struct {
-	inner:  []byte,
-	width:  i64,
-	height: i64,
-	stride: i64,
-}
-
-@(private = "file")
-grid_at :: proc(grid: Grid, row: i64, col: i64) -> ^byte {
-	if row < 0 || col < 0 {return nil}
-	if col >= grid.width || row >= grid.height {return nil}
-	return &grid.inner[row * grid.stride + col]
-}
-
-@(private = "file")
 is_accessible :: proc(grid: Grid, row: i64, col: i64) -> bool {
 	return is_accessible_with_generation(grid, row, col, 0)
 }

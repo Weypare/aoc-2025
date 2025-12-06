@@ -34,5 +34,6 @@ SOLUTIONS: []proc(_: []byte) = {
 	day3,
 	day4,
 	day5,
+	day6,
 	//
 }
