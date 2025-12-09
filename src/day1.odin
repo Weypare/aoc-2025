@@ -3,7 +3,7 @@ package aoc_2025
 import "core:bytes"
 import "core:fmt"
 
-day1 :: proc(input_: []byte) {
+day1 :: proc(input_: []byte, _: bool) {
 	input := input_
 	dial: i64 = 50
 	zero_count_p1: i64 = 0

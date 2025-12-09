@@ -3,7 +3,7 @@ package aoc_2025
 import "core:bytes"
 import "core:fmt"
 
-day4 :: proc(input: []byte) {
+day4 :: proc(input: []byte, _: bool) {
 	trimmed := bytes.trim_right_space(input)
 
 	count_p1: i64 = 0

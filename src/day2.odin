@@ -4,7 +4,7 @@ import "core:bytes"
 import "core:fmt"
 import "core:math"
 
-day2 :: proc(input: []byte) {
+day2 :: proc(input: []byte, _: bool) {
 	trimmed := bytes.trim_space(input)
 
 	sum_p1: i64 = 0

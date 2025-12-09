@@ -16,3 +16,6 @@ run day: build
 
 run-example day: build
     {{exe_file}} {{day}} --example
+
+new-day day:
+    touch src/day{{day}}.odin inputs/{{day}}.example.txt inputs/{{day}}.txt

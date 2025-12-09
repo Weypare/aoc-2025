@@ -4,7 +4,7 @@ import "core:bytes"
 import "core:fmt"
 import "core:slice"
 
-day5 :: proc(input_: []byte) {
+day5 :: proc(input_: []byte, _: bool) {
 	input := input_
 
 	count_p1: i64 = 0

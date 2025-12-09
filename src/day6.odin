@@ -3,7 +3,7 @@ package aoc_2025
 import "core:bytes"
 import "core:fmt"
 
-day6 :: proc(input: []byte) {
+day6 :: proc(input: []byte, _: bool) {
 	part1(input)
 	part2(input)
 }

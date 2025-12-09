@@ -25,10 +25,10 @@ main :: proc() {
 	assert(success, "input file exists")
 
 	solution := SOLUTIONS[cli.day - 1]
-	solution(input)
+	solution(input, cli.example)
 }
 
-SOLUTIONS: []proc(_: []byte) = {
+SOLUTIONS: []proc(_: []byte, is_example: bool) = {
 	day1,
 	day2,
 	day3,
@@ -36,5 +36,6 @@ SOLUTIONS: []proc(_: []byte) = {
 	day5,
 	day6,
 	day7,
+	day8,
 	//
 }

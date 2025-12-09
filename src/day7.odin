@@ -4,7 +4,7 @@ import "core:bytes"
 import "core:fmt"
 import "core:slice"
 
-day7 :: proc(input_: []byte) {
+day7 :: proc(input_: []byte, _: bool) {
 	input := input_
 
 	width: i64 = auto_cast bytes.index_byte(input, '\n')
