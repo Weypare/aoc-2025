@@ -37,5 +37,6 @@ SOLUTIONS: []proc(_: []byte, is_example: bool) = {
 	day6,
 	day7,
 	day8,
+	day9,
 	//
 }

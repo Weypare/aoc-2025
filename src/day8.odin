@@ -4,6 +4,7 @@ import "core:bytes"
 import "core:fmt"
 import "core:slice"
 
+@(private = "file")
 Vec3 :: [3]f32
 
 day8 :: proc(input_: []byte, is_example: bool) {
