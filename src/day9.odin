@@ -3,7 +3,7 @@ package aoc_2025
 import "core:bytes"
 import "core:fmt"
 import "core:math"
-
+import "core:slice"
 
 @(private = "file")
 Vec2 :: [2]f64
@@ -52,6 +52,24 @@ part2 :: proc(red_tiles: []Vec2) {
 	Square :: struct {
 		top_left:     Vec2,
 		bottom_right: Vec2,
+		area:         f64,
+	}
+
+	make_square :: proc(a, b: Vec2) -> Square {
+		low_x := min(a.x, b.x)
+		high_x := max(a.x, b.x)
+		low_y := min(a.y, b.y)
+		high_y := max(a.y, b.y)
+
+		dx := high_x - low_x + 1
+		dy := high_y - low_y + 1
+		area := dx * dy
+
+		return Square {
+			top_left = Vec2{low_x, low_y},
+			bottom_right = Vec2{high_x, high_y},
+			area = area,
+		}
 	}
 
 	contains_square :: proc(container, containee: Square) -> bool {
@@ -63,57 +81,51 @@ part2 :: proc(red_tiles: []Vec2) {
 		)
 	}
 
+	squares: [dynamic]Square
+	defer delete(squares)
+
+	for t1, i in red_tiles {
+		for t2 in red_tiles[i + 1:] {
+			append(&squares, make_square(t1, t2))
+		}
+	}
+	slice.sort_by_key(squares[:], proc(s: Square) -> f64 {return s.area})
+
 	bad_squares: [dynamic]Square
 	defer delete(bad_squares)
 
-	for t1, i in red_tiles {
-		fmt.printfln("Progress %d/%d", i + 1, len(red_tiles))
-		tile_loop: for t2 in red_tiles[i + 1:] {
-			dx := math.abs(t1.x - t2.x) + 1
-			dy := math.abs(t1.y - t2.y) + 1
-			area := dx * dy
-			if area > max_area {
-				low_x := min(t1.x, t2.x)
-				high_x := max(t1.x, t2.x)
-				low_y := min(t1.y, t2.y)
-				high_y := max(t1.y, t2.y)
+	outer: for s, i in squares {
+		fmt.printf("\rProgress %d/%d", i + 1, len(squares))
 
-				square := Square {
-					top_left     = Vec2{low_x, low_y},
-					bottom_right = Vec2{high_x, high_y},
-				}
-				for containee in bad_squares {
-					if contains_square(square, containee) {
-						continue tile_loop
-					}
-				}
-
-				for x in low_x ..= high_x {
-					points := [2]Vec2{Vec2{x, low_y}, Vec2{x, high_y}}
-					for point in points {
-						if !is_inside_non_convex_polygon(red_tiles, point) {
-							append(&bad_squares, square)
-							continue tile_loop
-						}
-					}
-				}
-				for y in low_y ..= high_y {
-					points := [2]Vec2{Vec2{low_x, y}, Vec2{high_x, y}}
-					for point in points {
-						if !is_inside_non_convex_polygon(red_tiles, point) {
-							append(&bad_squares, square)
-							continue tile_loop
-						}
-					}
-				}
-
-				fmt.printfln("Found new largest area=%f %v %v", area, t1, t2)
-				max_area = area
+		for containee in bad_squares {
+			if contains_square(s, containee) {
+				continue outer
 			}
 		}
+
+		for x in s.top_left.x ..= s.bottom_right.x {
+			points := [2]Vec2{Vec2{x, s.top_left.y}, Vec2{x, s.bottom_right.y}}
+			for point in points {
+				if !is_inside_non_convex_polygon(red_tiles, point) {
+					append(&bad_squares, s)
+					continue outer
+				}
+			}
+		}
+		for y in s.top_left.y ..= s.bottom_right.y {
+			points := [2]Vec2{Vec2{s.top_left.x, y}, Vec2{s.bottom_right.x, y}}
+			for point in points {
+				if !is_inside_non_convex_polygon(red_tiles, point) {
+					append(&bad_squares, s)
+					continue outer
+				}
+			}
+		}
+
+		max_area = s.area
 	}
 
-	fmt.printfln("Part 2: %d", cast(i64)max_area)
+	fmt.printfln("\nPart 2: %d", cast(i64)max_area)
 }
 
 @(private = "file")
